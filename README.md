@@ -51,7 +51,7 @@ article .title {
 }
 ```
 
-The text has a longer size than 100px, its tag `.title` can not contain 2 lines, because of its `line-height` and `height` properties. To enhance the display, you can use the truncate plugin with the following :
+The text is longer than 100px, its tag `.title` can not contain 2 lines, because of its `line-height` and `height` properties. To enhance the display, you can use the truncate plugin with the following :
 
 ```javascript
 $('article .title').truncate();
@@ -73,13 +73,13 @@ $('article .title').truncate(
     // Recalculate when the window is resized
     refreshOnWindowResize: true,
  
-	// The delay for recalculate after resizing window
+    // The delay for recalculate after resizing window
     refreshResizeDelay: 50
     
     // Suffix at the end of the truncated text
     suffix: '...',
 
-	// A word will be cut if it contain more than 255 caracters
+    // A word will be cut if it contain more than 255 caracters
     maximumWordLenght: 255,
 );
 ```
