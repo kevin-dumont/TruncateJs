@@ -1,3 +1,5 @@
+# TruncateJS, a jQuery plugin to truncate() all
+
 TruncateJS is a jQuery plugin to truncate too long texts.
 It is based on the size of HTML elements.
 Thus, content which overflow its container will be cut.
