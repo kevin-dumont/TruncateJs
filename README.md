@@ -83,7 +83,7 @@ $('article .title').truncate(
     maximumWordLenght: 255,
 );
 ```
-> **Note :** All described options are default options.
+> **Note :** All values for described options are default values.
 
 ## License
 TruncateJs in under a [MIT License](https://opensource.org/licenses/MIT).
