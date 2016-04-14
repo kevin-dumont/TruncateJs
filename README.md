@@ -45,6 +45,7 @@ article {
 }
 
 article .title {
+    display: inline-block;
     height: 26px;
     line-height: 26px;
 }
