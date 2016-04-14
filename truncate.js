@@ -19,6 +19,7 @@
         this.jQueryObject = element;
         this.elements = [];
         this.data = jQuery.extend(true, defaultOptions, data);
+        this.stringHelper = new StringHelper();
         this.init();
     }
 
@@ -74,7 +75,7 @@
                             finalText = word;
                         } else {
                             var test = finalText + ' ' + word;
-                            test = test.trim(['.', ' ']) + this.data.suffix;
+                            test = this.stringHelper.trim(test, ['.', ' ']) + this.data.suffix;
 
                             if (!this.checkIfHeightWordIsTooLongForElement(test, i)) {
                                 finalText += ' ' + word;
@@ -83,10 +84,10 @@
                             }
                         }
                     }
-                    finalText = finalText.trim([' ', '.']);
+                    finalText = this.stringHelper.trim(finalText, [' ', '.']);
 
                     // If the text need to truncate
-                    if (finalText != this.elements[i].originalContent) {
+                    if (finalText.split(' ').length != this.elements[i].originalContent.split(' ').length) {
                         finalText += this.data.suffix;
                     }
                     this.setTextToElement(i, finalText);
@@ -130,7 +131,7 @@
                 innerWidth: jQueryObject.innerWidth(),
                 scrollHeight: element.scrollHeight,
                 innerHeight: jQueryObject.innerHeight(),
-                originalContent: jQueryObject.html().trim('\r\n', '\n', '\r', ' ')
+                originalContent: this.stringHelper.trim(jQueryObject.html(), ['\r\n', '\n', '\r', ' '])
             };
             object.overflowWidth = object.scrollWidth > object.jQueryObject.innerWidth();
             object.overflowHeight = object.scrollHeight > object.jQueryObject.innerHeight();
@@ -164,7 +165,7 @@
         checkIfSizeWordIsTooLongForElement: function (type, word, indexOfElement) {
             var oldHtm = this.elements[indexOfElement].jQueryObject.html();
             this.setTextToElement(indexOfElement, word);
-            var attribute = 'overflow' + type.capitalize();
+            var attribute = 'overflow' + this.stringHelper.capitalize(type);
 
             if (this.elements[indexOfElement][attribute]) {
                 this.elements[indexOfElement].jQueryObject.html(oldHtm);
@@ -175,26 +176,23 @@
         }
     };
 
+    function StringHelper(){}
+
+    StringHelper.prototype = {
+        capitalize: function(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        },
+        trim: function (str, chars) {
+            return this.leftTrim(this.rightTrim(str, chars), chars);
+        },
+        leftTrim: function (str, chars) {
+            chars = chars || "\\s";
+            return str.replace(new RegExp("^[" + chars + "]+", "g"), "");
+        },
+        rightTrim: function (str, chars){
+            chars = chars || "\\s";
+            return str.replace(new RegExp("[" + chars + "]+$", "g"), "");
+        }
+    };
+
 }(jQuery));
-
-String.prototype.capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-};
-
-String.prototype.trimLeft = function(charlist) {
-    if (charlist === undefined) {
-        charlist = "\s";
-    }
-    return this.replace(new RegExp("^[" + charlist + "]+"), "");
-};
-
-String.prototype.trimRight = function(charlist) {
-    if (charlist === undefined) {
-        charlist = "\s";
-    }
-    return this.replace(new RegExp("[" + charlist + "]+$"), "");
-};
-
-String.prototype.trim = function(charlist) {
-    return this.trimLeft(charlist).trimRight(charlist);
-};
