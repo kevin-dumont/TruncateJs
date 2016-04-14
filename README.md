@@ -6,7 +6,7 @@ Thus, content which overflow its container will be cut.
 
 ## Demo
 
-You can see the result on JSFiddle [here](https://jsfiddle.net/L37soaao/24).
+You can see the result on JSFiddle [here](https://jsfiddle.net/sygmaa/p25ekqna/).
 
 ## Documentation
 
