@@ -16,7 +16,7 @@ Very **simple**, it's only a jQuery plugin, **no CSS needed**.
 So, you just have to load the script as following :
 
 ```html
-<script type="text/javascript" src="your/path/truncate.min.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/sygmaa/TruncateJs/master/truncate.min.js"></script>
 ```
 
 > **Notes :**
