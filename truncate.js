@@ -206,9 +206,11 @@
         resetCssForElement: function(elementIndex) {
             var that = this;
 
-            $.each(this.elements[elementIndex].originalCss, function (property, value) {
-                that.elements[elementIndex].jQueryObject.css(property, value);
-            });
+            if (typeof this.elements[elementIndex].originalCss != 'undefined') {
+                $.each(this.elements[elementIndex].originalCss, function (property, value) {
+                    that.elements[elementIndex].jQueryObject.css(property, value);
+                });
+            }
         },
         resetElements: function() {
             for (var i = 0; i < this.elements.length; i++) {
