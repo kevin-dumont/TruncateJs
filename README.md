@@ -85,6 +85,18 @@ $('article .title').truncate(
 ```
 > **Note :** All values for described options are default values.
 
+### Destroy a truncate object
+
+If you want stop to truncate a text, you can use the destroy() method like that :
+
+```javascript
+// Instanciation
+var truncateArticleTitle = $('article .title').truncate();
+
+// Destroy
+truncateArticleTitle.destroy();
+```
+
 ## License
 TruncateJs in under a [MIT License](https://opensource.org/licenses/MIT).
 
