@@ -12,7 +12,7 @@
     };
 
     $.fn.truncate = function (options) {
-        new Truncate(options, $(this));
+        return new Truncate(options, $(this));
     };
 
     function Truncate(data, element) {
@@ -25,6 +25,7 @@
 
     Truncate.prototype = {
         init: function () {
+            this._destroy = false;
             this.initElements();
             this.hideOverflowContent();
             this.bindEvents();
@@ -37,7 +38,12 @@
 
                 var resizeTimer;
 
-                $(window).on('resize', function () {
+                $(window).on('resize', function (event) {
+
+                    if(this._destroy) {
+                        $(this).unbind(event);
+                        event.prevendDefault();
+                    }
 
                     clearTimeout(resizeTimer);
                     resizeTimer = setTimeout(function(){
@@ -61,7 +67,7 @@
 
                 if (contentOverflow || forceRefresh) {
 
-                    this.addCss(this.elements[i].jQueryObject);
+                    this.addCss(i);
                     var text = this.elements[i].originalContent;
                     var words = text.split(" ");
                     this.elements[i].jQueryObject.html('');
@@ -94,16 +100,30 @@
                 }
             }
         },
-        addCss: function (element) {
+        addCss: function (elementIndex) {
+
+            if (this.elements[elementIndex].cssAlreadyAdded) {
+                return;
+            }
+
+            this.elements[elementIndex].cssAlreadyAdded = true;
+            this.elements[elementIndex].originalCss = {};
+
             if (this.data.breakWords) {
-                element.css({
+                var wordBreak = this.elements[elementIndex].jQueryObject.css('word-break');
+                var hyphens = this.elements[elementIndex].jQueryObject.css('hyphens');
+                this.elements[elementIndex].originalCss['word-break'] = wordBreak ? wordBreak : '';
+                this.elements[elementIndex].originalCss['hyphens'] = hyphens ? hyphens : '';
+                this.elements[elementIndex].jQueryObject.css({
                     'word-break': 'break-all',
                     'hyphens': 'auto'
                 });
             }
 
             if (this.data.overflowHidden) {
-                element.css('overflow', 'hidden');
+                var overflow = this.elements[elementIndex].jQueryObject.css('overflow');
+                this.elements[elementIndex].originalCss['overflow'] = overflow ? overflow : '';
+                this.elements[elementIndex].jQueryObject.css('overflow', 'hidden');
             }
         },
         setTextToElement: function (indexOfElement, text) {
@@ -173,6 +193,28 @@
             }
             this.elements[indexOfElement].jQueryObject.html(oldHtm);
             return false;
+        },
+        destroy: function() {
+            this.resetElements();
+            this.elements = [];
+            this.jQueryObject = [];
+            this.data = [];
+            this.stringHelper = null;
+            this._destroy = true;
+            return true;
+        },
+        resetCssForElement: function(elementIndex) {
+            var that = this;
+
+            $.each(this.elements[elementIndex].originalCss, function (property, value) {
+                that.elements[elementIndex].jQueryObject.css(property, value);
+            });
+        },
+        resetElements: function() {
+            for (var i = 0; i < this.elements.length; i++) {
+                this.resetCssForElement(i);
+                this.setTextToElement(i, this.elements[i].originalContent);
+            }
         }
     };
 
