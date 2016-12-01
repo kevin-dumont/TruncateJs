@@ -40,13 +40,13 @@
 
                 $(window).on('resize', function (event) {
 
-                    if(this._destroy) {
+                    if (this._destroy) {
                         $(this).unbind(event);
                         event.prevendDefault();
                     }
 
                     clearTimeout(resizeTimer);
-                    resizeTimer = setTimeout(function(){
+                    resizeTimer = setTimeout(function () {
                         instance.refreshElements();
                         instance.hideOverflowContent(true);
                     }, instance.data.refreshResizeDelay);
@@ -166,7 +166,7 @@
             var tooLong = false;
             var maxIteration = this.data.maximumWordLenght;
 
-            while (this.checkIfWidthWordIsTooLongForElement(word + this.data.suffix, indexOfElement) &&  maxIteration > 0) {
+            while (this.checkIfWidthWordIsTooLongForElement(word + this.data.suffix, indexOfElement) && maxIteration > 0) {
                 tooLong = true;
                 word = word.substr(0, word.length - 1);
                 maxIteration--;
@@ -194,7 +194,7 @@
             this.elements[indexOfElement].jQueryObject.html(oldHtm);
             return false;
         },
-        destroy: function() {
+        destroy: function () {
             this.resetElements();
             this.elements = [];
             this.jQueryObject = [];
@@ -203,7 +203,7 @@
             this._destroy = true;
             return true;
         },
-        resetCssForElement: function(elementIndex) {
+        resetCssForElement: function (elementIndex) {
             var that = this;
 
             if (typeof this.elements[elementIndex].originalCss != 'undefined') {
@@ -212,18 +212,27 @@
                 });
             }
         },
-        resetElements: function() {
+        resetElements: function () {
             for (var i = 0; i < this.elements.length; i++) {
                 this.resetCssForElement(i);
                 this.setTextToElement(i, this.elements[i].originalContent);
             }
+        },
+        getItemByJqueryObject: function (jqueryElement) {
+            for (var i = 0; i < this.elements.length; i++) {
+                if (jqueryElement == this.elements[i].jQueryObject.get(0)) {
+                    return this.elements[i];
+                }
+            }
+            return false;
         }
     };
 
-    function StringHelper(){}
+    function StringHelper() {
+    }
 
     StringHelper.prototype = {
-        capitalize: function(str) {
+        capitalize: function (str) {
             return str.charAt(0).toUpperCase() + str.slice(1);
         },
         trim: function (str, chars) {
@@ -233,7 +242,7 @@
             chars = chars || "\\s";
             return str.replace(new RegExp("^[" + chars + "]+", "g"), "");
         },
-        rightTrim: function (str, chars){
+        rightTrim: function (str, chars) {
             chars = chars || "\\s";
             return str.replace(new RegExp("[" + chars + "]+$", "g"), "");
         }
