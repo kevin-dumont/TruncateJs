@@ -220,7 +220,7 @@
         },
         getItemByJqueryObject: function (jqueryElement) {
             for (var i = 0; i < this.elements.length; i++) {
-                if (jqueryElement == this.elements[i].jQueryObject.get(0)) {
+                if (jqueryElement.get(0) == this.elements[i].jQueryObject.get(0)) {
                     return this.elements[i];
                 }
             }
